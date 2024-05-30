@@ -7,7 +7,15 @@
 provides snippets to make life easier with PowerScript
 
 # COMReflection
-TBD
+The class provides the following static functions
+
+    static [void] SetNamedProperty([System.Object]$object, [String] $propertyName, [System.Object]$propertyValue)
+
+    static [System.Object]GetNamedProperty([System.Object]$object, [String]$propertyName) 
+
+    static [System.Object]InvokeNamedParameter([System.Object]$object, [String]$method, [Hashtable]$parameter) 
+
+    static [Void]SetNamedProperties([System.Object]$object, [Hashtable]$keys_values)
 
 ## example:
 
@@ -17,11 +25,27 @@ TBD
     })
 
 # COMOffice
-TBD
+The constructor adds the object model for the selected office component ("excel", "word", "powerpoint", and "office") to PowerShell and add all enumerations values to the object Enum property.
+
+    COMOffice([string]$component)
+
+The class provides the following properties
+
+    [System.Object] Application
+    [System.Collections.Hashtable] Enum
+
+If the Apllication property is read the first time, the application object of the instantiated Microsoft Office application will be created. With Excel an existing instance (which acts as a server) will be leveraged as application object. The component "office" will not allow to access the not existing Application object.  
+The application object will be closed when $null is assigned. An excepetion will be thrown if any other value than $null is written.
+
+The Enum property will allow access to any enumarations of the intiated object model through the hashtable with the name of the value as key.  
 
 ## example:
  
     $wrd = New-Object COMOffice("word")
     $document = $wrd.Application.Documents.Add()
     $wrd.Application.Visible = [Microsoft.Office.Core.MsoTriState]::msoTrue
-    $document.Saved = [Microsoft.Office.Core.MsoTriState]::msoTrue   
+    $document.Saved = [Microsoft.Office.Core.MsoTriState]::msoTrue  
+
+    ...
+
+    $wrd.Application = $null
