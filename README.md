@@ -37,7 +37,7 @@ The class provides the following properties
 If the Apllication property is read the first time, the application object of the instantiated Microsoft Office application will be created. With Excel an existing instance (which acts as a server) will be leveraged as application object. The component "office" will not allow to access the not existing Application object.  
 The application object will be closed when $null is assigned. An excepetion will be thrown if any other value than $null is written.
 
-The Enum property will allow access to any enumarations of the intiated object model through the hashtable with the name of the value as key.  
+The Enum property will allow access to any enumarations of the instantiated object model through the hashtable with the name of the value as key.  
 
 ## example:
  
