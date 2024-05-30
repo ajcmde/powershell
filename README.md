@@ -1,10 +1,10 @@
-# Snippets for Powershell
+# Snippets for PowerShell
 
 # tags 
 #POWERSHELL, #MICROSOFTOFFICE, #COM, #AUTOMATION
 
 # description
-provides snippets to make life easier with PowerScript
+provides snippets to make life easier with PowerShell
 
 # COMReflection
 The class provides the following static functions
