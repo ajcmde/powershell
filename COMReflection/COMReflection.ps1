@@ -52,8 +52,7 @@ class COMReflection {
                 Invoke-Expression  $expression
             }
             catch {
-                #@@@ callstack
-                Write-Warning "${callstack}: set_property failed: [$key] = [$value]: $_"
+                Write-Warning "set_property failed: [$key] = [$value]: $_"
             }
         }
     }
