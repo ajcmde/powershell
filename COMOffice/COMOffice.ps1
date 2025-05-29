@@ -69,6 +69,9 @@ class COMOffice {
     COMOffice([string]$component) {
         $this.Enum = @{}
         $this.Component = $component
+        if("outlook" -eq $component) {
+            COMOffice("office") | Out-Null # outlook needs office interop
+        }
         if("office" -eq $component) {
             $path = "$env:WINDIR\assembly\GAC_MSIL\office\*\office.dll"
         }
