@@ -4,7 +4,7 @@
 #POWERSHELL, #MICROSOFTOFFICE, #COM, #AUTOMATION
 
 # description
-provides snippets to make life easier with PowerShell
+provides snippets to make life easier with PowerShell and Office
 
 # COMReflection
 The class provides the following static functions
