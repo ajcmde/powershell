@@ -66,26 +66,33 @@ class COMOffice {
             }
     }
 
+
     COMOffice([string]$component) {
-        $this.Enum = @{}
-        $this.Component = $component
-        if("outlook" -eq $component) {
-            COMOffice("office") | Out-Null # outlook needs office interop
-        }
-        if("office" -eq $component) {
-            $path = "$env:WINDIR\assembly\GAC_MSIL\office\*\office.dll"
-        }
-        else {
-            $path = "$env:WINDIR\assembly\GAC_MSIL\Microsoft.Office.Interop.$component\*\Microsoft.Office.Interop.$component.dll"
-        }
-        Add-Type -Path $path -PassThru |
-        Where-Object { $_.BaseType -eq [System.Enum] } | 
-        ForEach-Object -Process { $_.GetEnumValues() } | ForEach-Object -Process {
-            if([string]::IsNullOrEmpty($this.Enum[[string]$_])) { 
-                $this.Enum.Add([string]$_, [int]$_) 
-            } elseif ($this.Enum[[string]$_] -ne [int]$_) {
-                Write-Warning "$([COMOffice].Name).Enum duplicate hashes: $([string]$_): $($this.Enum[[string]$_]) >< $([int]$_)"
+        _COMOffice([string]$component) {
+            # constructor may create another COMOffice object for office interop
+            $this.Enum = @{}
+            $this.Component = $component
+            if("outlook" -eq $component) {
+                New-Object _COMOffice("office") | Out-Null # outlook needs office interop
             }
-        }                   
+            if("office" -eq $component) {
+                $path = "$env:WINDIR\assembly\GAC_MSIL\office\*\office.dll"
+            }
+            else {
+                $path = "$env:WINDIR\assembly\GAC_MSIL\Microsoft.Office.Interop.$component\*\Microsoft.Office.Interop.$component.dll"
+            }
+            # load interop assembly and create enum hashtable
+            Add-Type -Path $path -PassThru |
+            Where-Object { $_.BaseType -eq [System.Enum] } | 
+            ForEach-Object -Process { $_.GetEnumValues() } | ForEach-Object -Process {
+                if([string]::IsNullOrEmpty($this.Enum[[string]$_])) { 
+                    $this.Enum.Add([string]$_, [int]$_) 
+                } elseif ($this.Enum[[string]$_] -ne [int]$_) {
+                    Write-Warning "$([COMOffice].Name).Enum duplicate hashes: $([string]$_): $($this.Enum[[string]$_]) >< $([int]$_)"
+                }
+            }                   
+        }
+
+        $this._COMOffice($component)
     }
 }
